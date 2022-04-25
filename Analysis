@@ -1,0 +1,45 @@
+# This Python 3 environment comes with many helpful analytics libraries installed
+# It is defined by the kaggle/python Docker image: https://github.com/kaggle/docker-python
+# For example, here's several helpful packages to load
+
+import numpy as np # linear algebra
+import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
+import matplotlib as mlt
+import matplotlib.pyplot as plt
+import seaborn as sns
+# Input data files are available in the read-only "../input/" directory
+# For example, running this (by clicking run or pressing Shift+Enter) will list all files under the input directory
+
+import os
+for dirname, _, filenames in os.walk('/kaggle/input'):
+    for filename in filenames:
+        print(os.path.join(dirname, filename))
+
+# You can write up to 20GB to the current directory (/kaggle/working/) that gets preserved as output when you create a version using "Save & Run All" 
+# You can also write temporary files to /kaggle/temp/, but they won't be saved outside of the current session
+
+filepath = '../input/alcohol-consumption-by-country/alcohol-consumption-vs-gdp-per-capita.csv'
+data = pd.read_csv(filepath)
+data.head(20)
+
+turkey = data.loc[(data.Entity == 'Turkey') & (data.Year >= 2000)] 
+russia = data.loc[(data.Entity == 'Russia') & (data.Year >= 2000)] 
+russia = russia.drop(columns='Continent')
+
+russia.dropna()
+turkey.dropna()
+
+turkey.columns =['Country', 'Code', 'Year', 'Consumption', 'Gdppercap', 'Population', 'continent']
+turkey1 = turkey.drop(columns='continent')
+
+russia.columns =['Country', 'Code', 'Year', 'Consumption', 'Gdppercap', 'Population']
+russia.head()
+sns.lineplot(data=gdp)
+
+# Russia Alchol consumptoion by year
+sns.lineplot(data=russia, x='Year', y='Consumption')
+
+# Turkey GDP per capita 
+sns.lineplot(data=turkey1, x='Year', y='Gdppercap')
+
+sns.regplot(x=russia['Gdppercap'], y=russia['Year'])
